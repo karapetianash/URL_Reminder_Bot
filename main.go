@@ -1,14 +1,15 @@
 package main
 
 import (
+	"URLReminderBot/clients/telegram"
 	"flag"
 	"log"
 )
 
-func main() {
-	t := mustToken()
+const tgBotHost = "api.telegram.org"
 
-	//tgClient := telegram.New(t)
+func main() {
+	tgClient := telegram.New(mustToken(), tgBotHost)
 
 	//fetcher := fetcher.New(tgClient)
 
