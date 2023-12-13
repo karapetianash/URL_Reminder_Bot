@@ -1,9 +1,10 @@
 package main
 
 import (
-	"URLReminderBot/clients/telegram"
 	"flag"
 	"log"
+
+	"URLReminderBot/clients/telegram"
 )
 
 const tgBotHost = "api.telegram.org"
