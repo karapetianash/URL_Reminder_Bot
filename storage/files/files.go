@@ -31,7 +31,7 @@ func (s *Storage) Save(p *storage.Page) (err error) {
 
 	fPath := filepath.Join(s.BasePath, p.UserName)
 
-	if err := os.MkdirAll(fPath, defaultPerm); err != nil {
+	if err = os.MkdirAll(fPath, defaultPerm); err != nil {
 		return err
 	}
 
@@ -45,7 +45,7 @@ func (s *Storage) Save(p *storage.Page) (err error) {
 	file, err := os.Create(fPath)
 	defer func() { _ = file.Close() }()
 
-	if err := gob.NewEncoder(file).Encode(p); err != nil {
+	if err = gob.NewEncoder(file).Encode(p); err != nil {
 		return err
 	}
 
@@ -53,7 +53,7 @@ func (s *Storage) Save(p *storage.Page) (err error) {
 }
 
 func (s *Storage) PickRandom(userName string) (page *storage.Page, err error) {
-	defer func() { err = myErr.WrapIfErr("can't pick", err) }()
+	defer func() { err = myErr.WrapIfErr("can't pick a file", err) }()
 
 	fPath := filepath.Join(s.BasePath, userName)
 
@@ -77,12 +77,12 @@ func (s *Storage) PickRandom(userName string) (page *storage.Page, err error) {
 func (s *Storage) Remove(p *storage.Page) error {
 	fName, err := fileName(p)
 	if err != nil {
-		return myErr.Wrap("can't remove page", err)
+		return myErr.Wrap("can't remove file", err)
 	}
 
 	finalPath := filepath.Join(s.BasePath, p.UserName, fName)
 
-	if err := os.Remove(finalPath); err != nil {
+	if err = os.Remove(finalPath); err != nil {
 		msg := fmt.Sprintf("can't remove file %s", finalPath)
 		return myErr.Wrap(msg, err)
 	}
@@ -98,7 +98,7 @@ func (s *Storage) IsExist(p *storage.Page) (bool, error) {
 
 	finalPath := filepath.Join(s.BasePath, p.UserName, fName)
 
-	switch _, err := os.Stat(finalPath); {
+	switch _, err = os.Stat(finalPath); {
 	case errors.Is(err, os.ErrExist):
 		return false, nil
 	case err != nil:

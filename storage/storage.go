@@ -20,15 +20,16 @@ type Page struct {
 	UserName string
 }
 
-func (p *Page) Hash() (string, error) {
+func (p *Page) Hash() (str string, err error) {
+	defer func() { err = myErr.Wrap("can't calculate hash", err) }()
 	h := sha1.New()
 
-	if _, err := io.WriteString(h, p.URL); err != nil {
-		return "", myErr.Wrap("can't calculate hash", err)
+	if _, err = io.WriteString(h, p.URL); err != nil {
+		return "", err
 	}
 
-	if _, err := io.WriteString(h, p.UserName); err != nil {
-		return "", myErr.Wrap("can't calculate hash", err)
+	if _, err = io.WriteString(h, p.UserName); err != nil {
+		return "", err
 	}
 
 	return fmt.Sprintf("%x", h.Sum(nil)), nil
