@@ -35,7 +35,7 @@ func newBasePath(token string) string {
 	return "bot" + token
 }
 
-func (c *Client) Update(ctx context.Context, offset, limit int) ([]Update, error) {
+func (c *Client) Updates(ctx context.Context, offset, limit int) ([]Update, error) {
 	q := url.Values{}
 	q.Add("offset", strconv.Itoa(offset))
 	q.Add("limit", strconv.Itoa(limit))
