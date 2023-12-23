@@ -117,5 +117,4 @@ func fetchType(upd telegram.Update) events.Type {
 	}
 
 	return events.Message
-
 }

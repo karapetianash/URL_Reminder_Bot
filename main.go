@@ -4,19 +4,30 @@ import (
 	"flag"
 	"log"
 
-	"URLReminderBot/clients/telegram"
+	tgClient "URLReminderBot/clients/telegram"
+	"URLReminderBot/consumer/eventConsumer"
+	"URLReminderBot/events/telegram"
+	"URLReminderBot/storage/files"
 )
 
-const tgBotHost = "api.telegram.org"
+const (
+	tgBotHost   = "api.telegram.org"
+	storagePath = "storage"
+	batchSize   = 100
+)
 
 func main() {
-	tgClient := telegram.New(mustToken(), tgBotHost)
+	eventProcessor := telegram.New(
+		tgClient.New(mustToken(), tgBotHost),
+		files.New(storagePath))
 
-	//fetcher := fetcher.New(tgClient)
+	log.Println("service started")
 
-	//processor := processor.New(tgClient)
+	consumer := eventConsumer.New(eventProcessor, eventProcessor, batchSize)
 
-	//consumer := consumer.Start(fetcher, processor)
+	if err := consumer.Start(); err != nil {
+		log.Fatal("service is stopped")
+	}
 }
 
 func mustToken() string {
